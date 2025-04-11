@@ -1,1 +1,1 @@
-oi galera cara como assim 
+trabaio sandero
