@@ -1,14 +1,20 @@
+import random
 from processo import Processo
 
 # a cpu faz um foreach que diminui o quantum dela com o tempo necessário do processo
 # se o quantum é o suficiente pro tempo necessário do processo, remove ele da fila e considera executado
-# se não é o quantum necessário, diminui o que da e coloca o processo com o tempo necessário diminuido para depois executar novamente
+# se não é o quantum necessário, diminui o que da e coloca o processo por último na fila para depois executar novamente com o tempo necessário menor
 
 class Cpu:
-    quantum = 100
-
-    def __init__(self, fila):
+    def __init__(self, quantum, fila):
+        self.quantum = quantum
         self.fila = fila
+
+    def getQuantum(self):
+        return self.quantum
+
+    def setQuantum(self, value):
+        self.quantum = value
 
     def getFila(self):
         return self.fila
@@ -17,23 +23,25 @@ class Cpu:
         self.fila = value
 
     def executa(self):
-        executados = []
+        newFila = self.getFila()
 
-        for processo in fila:
+        while len(newFila) > 0:
+            for processo in newFila:
+                if self.getQuantum() - processo.getTempoNecessario() >= 0:
+                    print('No processo ' + str(processo.getId()) + ' foram executadas ' + str(processo.getTempoNecessario())  + ' de ' + str(processo.getTempoNecessario()) + ' unidades de tempo.')
+                    print(str(processo.getId()) + ' executado com sucesso!')
+                    newFila.remove(processo)
+                else:
+                    print('No processo ' + str(processo.getId()) + ' foram executadas ' + str(self.getQuantum())  + ' de ' + str(processo.getTempoNecessario()) + ' unidades de tempo.')
+                    processo.setTempoNecessario(abs(self.getQuantum() - processo.getTempoNecessario()))
 
-            if self.quantum - processo.getTempoNecessario() >= 0:
-                print('No processo ' + str(processo.getId()) + ' foram executados ' + str(processo.getQuantum())  + ' de ' + str(tempoNecessario))
+# os processos tem tempo necessário randômico
+processo1 = Processo(1, random.randint(1, 300))
+processo2 = Processo(2, random.randint(1, 300))
+processo3 = Processo(3, random.randint(1, 300))
 
-                print(str(processo.getId()) + ' executado com sucesso!')
-                executados.append(processo.getId())
+fila = [processo1, processo2, processo3]
 
-            tempoNecessario -= processo.getQuantum()
-
-        print(executados)
-
-fila = [Processo(1, 10), Processo(2, 6), Processo(3, 11)]
-
-cpu = Cpu(fila)
+cpu = Cpu(100, fila)
 
 cpu.executa()
-
