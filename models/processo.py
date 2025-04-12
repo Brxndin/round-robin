@@ -1,5 +1,5 @@
 class Processo:
-    def __init__(self, id, quantum):
+    def __init__(self, id, tempoNecessario):
         self.id = id
         self.tempoNecessario = tempoNecessario
 
