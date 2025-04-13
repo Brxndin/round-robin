@@ -23,24 +23,19 @@ class Cpu:
         print('-----------------')
 
         while len(fila) > 0:
-            toRemove = []
+            processo = fila.pop(0)
 
-            for processo in fila:
-                if processo.getTempoNecessario() > 0:
-                    if self.getQuantum() - processo.getTempoNecessario() >= 0:
-                        print('No processo ' + str(processo.getId()) + ' foram executadas ' + str(processo.getTempoNecessario())  + ' de ' + str(processo.getTempoNecessario()) + ' unidades de tempo.')
-                        print('Processo ' + str(processo.getId()) + ' executado com sucesso!')
+            if processo.getTempoNecessario() > 0:
+                if self.getQuantum() - processo.getTempoNecessario() >= 0:
+                    print('No processo ' + str(processo.getId()) + ' foram executadas ' + str(processo.getTempoNecessario())  + ' de ' + str(processo.getTempoNecessario()) + ' unidades de tempo.')
+                    print('Processo ' + str(processo.getId()) + ' executado com sucesso!')
+                else:
+                    print('No processo ' + str(processo.getId()) + ' foram executadas ' + str(self.getQuantum())  + ' de ' + str(processo.getTempoNecessario()) + ' unidades de tempo.')
+                    
+                    processo.setTempoNecessario(abs(self.getQuantum() - processo.getTempoNecessario()))
 
-                        # define quais devem ser removidos depois
-                        # não remove diretamente aqui pois estava pulando uma posição
-                        toRemove.append(processo)
-                    else:
-                        print('No processo ' + str(processo.getId()) + ' foram executadas ' + str(self.getQuantum())  + ' de ' + str(processo.getTempoNecessario()) + ' unidades de tempo.')
-                        processo.setTempoNecessario(abs(self.getQuantum() - processo.getTempoNecessario()))
-
-            # remove os já executados
-            for processo in toRemove:
-                fila.remove(processo)
+                    # se não foi executado completamente, adiciona novamente na lista para executar depois
+                    fila.append(processo)
         
         print('-----------------')
 
