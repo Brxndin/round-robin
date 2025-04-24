@@ -41,13 +41,24 @@ class Cpu:
 
         print('Todos os processos foram executados com sucesso!')
 
-cpu = Cpu(100)
+# dados básicos
+quantum = 100
+quantidadeMaximaProcessos = 6
+quantidadeTempoProcesso = 300
 
-# os processos tem tempo necessário randômico
-processo1 = Processo(1, random.randint(1, 300))
-processo2 = Processo(2, random.randint(1, 300))
-processo3 = Processo(3, random.randint(1, 300))
+# execução
+# aqui cria a fila com quantidade de processos aleatória e com tempo necessário também aleatório
+processoAtual = 1
+fila = []
 
-fila = [processo1, processo2, processo3]
+while processoAtual <= random.randint(1, quantidadeMaximaProcessos):
+    # os processos tem tempo necessário randômico
+    novoProcesso = Processo(processoAtual, random.randint(1, quantidadeTempoProcesso))
+
+    fila.append(novoProcesso)
+
+    processoAtual += 1
+
+cpu = Cpu(quantum)
 
 cpu.executa(fila)
