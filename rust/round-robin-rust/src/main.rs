@@ -13,8 +13,7 @@ fn main() {
     let mut escalonador = Escalonador::new(5);
     let mut rng = rand::rng();
 
-    let _times: [u8; 10] = rng.random();
-    let times = [20, 15];
+    let times: [u8; 5] = rng.random();
 
     println!("Ordem lista:");
     for (index, process_time) in times.iter().enumerate() {
