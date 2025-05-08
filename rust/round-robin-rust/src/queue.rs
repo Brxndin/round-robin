@@ -18,6 +18,24 @@ impl Queue {
         self.items.remove(0)
     }
 
+    pub fn decrease(&mut self) -> Vec<Process> {
+        let mut vec_return = Vec::new();
+        let mut vec_stay = Vec::new();
+
+        for mut process in self.items.drain(..) {
+            process.wait_block -= 1;
+            if process.wait_block < 1 {
+                vec_return.push(process);
+            } else {
+                vec_stay.push(process);
+            }
+        }
+
+        self.items = vec_stay;
+
+        vec_return
+    }
+
     pub fn is_empty(&mut self) -> bool {
         self.items.is_empty()
     }
